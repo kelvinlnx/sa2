@@ -1,0 +1,131 @@
+Shell Script
+	- starts with #! followed by the language(shell)
+	- make it executable (chmod 755 or chmod a+x)
+
+	Variables:
+		Declaration
+		-----------
+		VARIABLE_NAME=<VALUE>	# There must not be spaces at all.
+
+	Commands:
+		file ARG...		# man - file(1), magic(5)
+		which ARG...
+
+		test CONDITION(S)	# man test
+		[ CONDITION(S) ]
+
+		GREP
+		====
+		syntax:
+			grep [-i] [-v] [-A <num-of-lines-after] [-B <num-of-lines-before>] [-n] {[-e] PATTERN}... [[-r] [<PATHNAME>]]
+		
+		grep -i '\<a.*' /etc/fstab
+		
+		
+
+Shell Features(man bash):
+	1. Meta-characters:
+		# 	- hash is used for comments
+		;	- command separator
+		' '	- space is an argument/option separator
+	2. Quoting:
+		\	- ignore the next character
+		''	- single quotes. EVERYTHING is ignored within single quotes.
+		""	- double quotes. Almost Everything is ignored. Substitutions will be interpreted by the shell first.
+
+	3. Substitutions:
+		Variables - Preceed a variable name with $.
+		Command   - $(CMD) OR `CMD`
+
+	4. I/O Redirection:
+		>|>> FILENAME		- redirect output to FILENAME
+		2>|2>> FILENAME		- redirect errors to FILENAME
+		>&2			- redirect output to error stream. Treat as error msg.
+		&> /dev/null		- throw away all output/error.
+
+	5. Selection
+		if CONDITION; then
+			COMMAND...
+		[[elif CONDITION; then
+			COMMAND...]...
+		else
+			COMMAND...]
+		fi
+
+		CMD1 && CMD2 || CMD3	- do CMD2 if CMD1 succeeds, CMD3 if CMD1 fails.
+
+	6. Iteration
+		for VARIABLE in LIST; do
+			COMMAND...
+		done
+
+	7. Regular Expressions (man 7 regex)
+		atom	= a single character or regular expression within bounds().
+			Eg.
+				x is an atom
+				(abc.*\.doc?) is also an atom
+		
+		1. Literal Character - a, b, c
+			abc = exact match abc
+		2. Metacharacter/Wildcard
+			. - any single character (exactly 1 character)
+				a.b - matches a follow by any 1 character and then b
+				    - axb
+				    - a.b
+				    - a0b
+			[] - any 1 character within boxed brackets.
+				[abc] - matches a or b or c
+				[abc]at - matches aat, bat or cat
+				[^abc] - any single character except a or b or c. either use ^ or !
+				[a-zA-Z0-9] 
+			<CHARACTER CLASSES>
+				[:space:] space or tab
+				[:upper:] = [A-Z]
+				[:lower:] = [a-z]
+				etc...
+		3. Modifiers (symbols after atom)
+			* - zero or more of previous atom 
+				a* - nothing or a or aa or aaa or aaaa or ...
+				a.*  - a follow by anything (file globbing a*)
+				c[ao]*t - cat, cot, ct, caat, caot, coat, coooot, caaaaoooot
+				c(ao)*t - ct, caot, caoaot, caoaoaot
+			+ - one or more of previous atom
+			? - zero or one of previous atom
+				A1?2 - A2 or A12
+				https? - http or https
+				b(oa)?t - bt or boat
+			{x} - x(digit) of previous atom
+			{x,} - x or more of previous atom
+			{x,y} - x to y of previous atom
+			{,y} - 0 to y of previous atom
+				w{3} - www
+				[0-9]{3} - 3 digit number
+				[:digit:]{6}-[:digit:]{2}-[:digit:]{4}  - malaysian IC number
+				[:digit:]{1,3}
+		
+		4. Anchors (symbols before/after atom)
+			(before)
+			^  - line begins with
+			\< - word begins with
+			(after)
+			\> - word ends with
+			$  - line ends with
+		
+				^The - matches The or Thesis on the beginning of the line.
+				ing\.$ - Line ends with "ing."
+				\<cat - word starts with c. Followed by the literal characters "at"
+				cat\> - word ends with t. With the literal character ca before it.
+				\<b(oa)*t\> - bt, boat, boaoat, boaoaoat, ...
+				^dog$ - matches exactly a word dog on a single line
+		
+			Eg.
+				This is a 4 paragraph example for the usage of regular expression. That is up to you to guess how it is done. Testing anything that starts with th is quite hard to do as well as ending with th. th is not Th and TH is not th.
+		
+				Second paragraph starts with some text that will last for a lifetime. When is the 3rd paragraph going to show up?
+		
+				Finally, we've reached the third paragraph in this example. The keyword is Th.
+		
+		This is the last line in the example for the paragraph demo.
+
+
+
