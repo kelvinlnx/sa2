@@ -128,4 +128,32 @@ Shell Features(man bash):
 		This is the last line in the example for the paragraph demo.
 
 
+Chap 2
+======
+	At
+	==
+		PACKAGE: at
+		DAEMON: atd
 
+		list   => at -l = atq = at -c JOB
+		remove => at -r JOB  = atrm
+		create => at TIME [< SCRIPT]	# if no script is provided, key in commands and end with CTRL-D
+
+
+	CRONTAB
+	=======
+		PACKAGE: cronie			# yum whatprovides crond OR rpm -q `which crond`
+		DAEMON: crond
+
+		crontab -l|r|e [USER]		# list, remove all, edit
+		syntax of file:
+			minute	hr	day-of-month	month	day-of-week	CMD
+			0-59	0-23	1-31		1-12	0-7		...
+
+
+		SYSTEM CRON JOBS:
+			/etc/crontab
+			/etc/cron.d/
+
+		ANACRON JOBS:
+			/etc/cron.{hourly,daily,weekly,monthly}/
