@@ -133,7 +133,7 @@ Chap 2
 	At
 	==
 		PACKAGE: at
-		DAEMON: atd
+		SERVICE: atd
 
 		list   => at -l = atq = at -c JOB
 		remove => at -r JOB  = atrm
@@ -143,7 +143,7 @@ Chap 2
 	CRONTAB
 	=======
 		PACKAGE: cronie			# yum whatprovides crond OR rpm -q `which crond`
-		DAEMON: crond
+		SERVICE: crond
 
 		crontab -l|r|e [USER]		# list, remove all, edit
 		syntax of file:
@@ -157,3 +157,138 @@ Chap 2
 
 		ANACRON JOBS:
 			/etc/cron.{hourly,daily,weekly,monthly}/
+            
+Chap 3
+======
+	Tuned
+	=====
+		PACKAGE: tuned
+		SERVICE: tuned
+		
+		tuned-adm list|profile|recommend|active|off
+		
+	Nice
+	====
+		nice -n NICE_VALUE CMD
+		renice -n NICE_VALUE -p PID
+		
+		ps -eo pid,ppid,ni,cls,psr,cmd
+
+Chap 4
+======
+	SELINUX
+	=======
+		It's built into the RH kernel. Can be turned on/off by setting selinux=0|1 kernel bootup param.
+		
+		3 Modes of operation:
+			Disabled    - selinux=0              - no enforcement, no log
+			Enforcing   - selinux=1,enforcing=1  - enforce policy, and log 
+			Permissive  - selinux=1,enforcing=0  - no enforcement, and log
+			
+		getenforce
+		setenforce 0|1
+		sestatus
+
+		/etc/selinux/config			# to set default mode
+
+		ps -Z
+		ls -Z
+
+		Traditional *nix (linux,unix) permission = Discretionary Access Control (DAC)
+		SELinux = Mandatory Access Control (MAC)
+
+		context:	user_u:role_r:type_t
+
+		semanage fcontext -l
+		semanage fcontext -a -t <CONTEXT_T> '<RE>'
+		semanage boolean -l
+		semanage port -l
+		semanage port -a -t <port_label> -p tcp|udp <PORTNUMBER>
+
+
+		grep avc /var/log/audit/audit.log
+
+		getsebool -l
+		setsebool [-P] <PARAM>=1|0 
+
+		restorecon -RF <PATH>
+		chcon [-R] -t <TYPE> <PATH>
+
+
+		Context -> user_u:role_r:type_t
+			zacc_u:participant_r:class_usage_t
+			kelvin_u:instructor_r:class_admin_t
+			panasonic_u:presenting_r:class_presentation_t
+
+		RULE
+			fcontext
+			port
+			boolean
+				can class_admin do presentation = TRUE
+				can class_admin do everything = TRUE
+				can class_usage access presentation device = FALSE
+
+
+Chap 5
+======
+
+	PARTITIONING
+	============
+		A Block Device (BD) can be a whole disk, partition, RAID dev, SAN, CDROM/DVD, floppy, logical volume, file, etc.
+
+		You can format a BD with a filesystem in order to use it. A filesystem (FS) example, VxFS, NTFS, FAT32, ext2/3/4, xfs, btrfs, ISO9660.
+
+		To use the FS, you need to mount the FS onto a mount point(directory).
+
+		RHEL8
+			udevadm settle   - run this cmd after partitioning
+			systemctl daemon-reload		- run this cmd after editing /etc/fstab
+
+		RHEL5
+			after partitioning just run "partprobe"
+		RHEL6
+			after partitioning on a device that is currently being accessed, REBOOT!!!!
+			after partitioning on a device that is not being accessed, partprobe
+		RHEL7
+			after partitioning just run "partprobe"
+
+
+		Device Naming Convention
+
+			IDE				- /dev/hd{a..h}[#]	eg. /dev/hda, /dev/hdb2
+			SCSI/SATA/USB	- /dev/sd{a...}[#]	eg. /dev/sda, /dev/sdb, /dev/sdc5
+			HP Smart Array	- /dev/cciss/c#t#d#	eg. /dev/cciss/c0t0d1
+			Virtual Disk	- /dev/vd{a...}[#]
+			XEN Virt Disk	- /dev/xvd{a...}[#]
+			Software RAID	- /dev/md#		eg. /dev/md0, /dev/md1p2, /dev/md127
+
+
+		lsblk - list block devices
+		df -hT - show mounted filesystems
+
+		lsof|grep vdb
+
+		cat /proc/partitions	- list what partitions and devices the kernel see
+
+		mkfs.<FSTYPE>  <DEVICE>	    - format FS
+		mkswap <DEVICE>
+			mkfs.ext4 /dev/vda2
+			mkfs.xfs /dev/sda3
+			mkfs.vfat /dev/vda3
+
+		vi /etc/fstab
+			#<FS-DEVICE>  <MNT_PT>   <FSTYPE>  <FSOPTS>  <DUMP> <FSCK>
+			/dev/sda1  /opt/share   ext4    defaults,ro  1     2
+			/dev/sdb   swap         swap    defaults     0     0
+
+		any changes to /etc/fstab, run the systemctl daemon-reload
+
+
+		mount [-t <FSTYPE>] [-o <FSOPTS>] [<FS-DEVICE>] [<MNT_PT>]
+		mount -v
+
+		free
+		swapon -s	# display summary of swap fs in use
+		swapon <DEVICE>		# use swap fs
+		swapoff <DEVICE>	# turn off swap device
+
