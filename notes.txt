@@ -362,6 +362,9 @@ Chap 7
 
 	Automount
 	=========
+		SERVICE: autofs
+		PACKAGES: autofs nfs-utils
+		
 		mount serverX:/sharename  /mybase/mymount
 			  <SERVER>  <SHARE>   <BASE>/<MNT_PT>
 		where,
