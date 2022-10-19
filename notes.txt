@@ -373,6 +373,11 @@ Chap 7
 			<BASE>	 = /mybase
 			<MNT_PT> = mymount
 
+		Below are samples of the following mount command performed using autofs direct and indirect maps:
+			mount serverX:/sharename/mymount /mybase/mymount
+			mount serverX:/sharename/yourmnt /mybase/yourmnt
+			mount serverX:/sharename/his_mnt /mybase/his_mnt
+		
 		/etc/auto.master.d/<SHARENAME>.autofs:
 			#<BASE>		/etc/auto.<SHARENAME>		# indirect map
 			/mybase		/etc/auto.myconfig
@@ -391,10 +396,6 @@ Chap 7
 		/etc/auto.mydirect
 			#<BASE>/<MNT_PT>  -rw,sync	<SERVER>:<SHARE>	# direct map
 			/mybase/mymount	  -rw,sync	serverX:/sharename/mymount
-
-
-		mount serverX:/sharename/mymount /mybase/mymount
-		mount serverX:/sharename/yourmnt /mybase/yourmnt
-		mount serverX:/sharename/his_mnt /mybase/his_mnt
-
+			/mybase/yourmnt   -rw,sync  serverX:/sharename/yourmnt
+			/mybase/his_mnt   -rw,sync  serverX:/sharename/his_mnt
 
