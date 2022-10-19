@@ -349,3 +349,49 @@ Chap 6
 		vdostats [--human-readable]
 
 		vdo list|start|stop
+
+
+Chap 7
+======
+	NFS Client
+	==========
+		mount [-t nfs] [-o <NFS_OPTS>] <SERVER>:<SHARE> <MNT_PT>
+			mount -t nfs -o ro,soft servera:/sharename /opt/projX
+
+		showmount -e <NFS_SERVER>
+
+	Automount
+	=========
+		mount serverX:/sharename  /mybase/mymount
+			  <SERVER>  <SHARE>   <BASE>/<MNT_PT>
+		where,
+			<SERVER> = serverX
+			<SHARE>  = /sharename
+			<BASE>	 = /mybase
+			<MNT_PT> = mymount
+
+		/etc/auto.master.d/<SHARENAME>.autofs:
+			#<BASE>		/etc/auto.<SHARENAME>		# indirect map
+			/mybase		/etc/auto.myconfig
+
+			#/-		/etc/auto.<SHARENAME>		# direct map
+			/-		/etc/auto.mydirect
+
+		/etc/auto.myconfig:
+			#<MNT_PT>	-ro,async	<SERVER>:<SHARE>         # indirect map
+			mymount		-rw,sync	serverX:/sharename/mymount
+			yourmnt		-rw,sync	serverX:/sharename/yourmnt
+			his_mnt		-rw,sync	serverX:/sharename/his_mnt
+			#shortcut instead of the 3 lines above
+			*		-rw,sync	serverX:/sharename/&
+
+		/etc/auto.mydirect
+			#<BASE>/<MNT_PT>  -rw,sync	<SERVER>:<SHARE>	# direct map
+			/mybase/mymount	  -rw,sync	serverX:/sharename/mymount
+
+
+		mount serverX:/sharename/mymount /mybase/mymount
+		mount serverX:/sharename/yourmnt /mybase/yourmnt
+		mount serverX:/sharename/his_mnt /mybase/his_mnt
+
+
