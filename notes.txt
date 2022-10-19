@@ -240,7 +240,7 @@ Chap 5
 
 		To use the FS, you need to mount the FS onto a mount point(directory).
 
-		RHEL8
+		RHEL8/9
 			udevadm settle   - run this cmd after partitioning
 			systemctl daemon-reload		- run this cmd after editing /etc/fstab
 
@@ -292,3 +292,60 @@ Chap 5
 		swapon <DEVICE>		# use swap fs
 		swapoff <DEVICE>	# turn off swap device
 
+
+Chap 6
+======
+	Logical Volume Manager (LVM)
+	============================
+		pvcreate  <DEVICE>...
+		pvdisplay <DEVICE>...
+		pvmove <PV>
+		pvremove <DEVICE>...
+
+		vgscan
+		vgcreate <VG_NAME> <PV>...
+		vgdisplay [-v] <VG_NAME>
+		vgextend <VG_NAME> <PV>...
+		vgreduce <VG_NAME> <PV>...
+		vgremove <VG_NAME>
+
+		lvcreate -n <LV_NAME> -L <SIZE>M|G <VG_NAME>
+		lvdisplay /dev/<VG_NAME>/<LV_NAME>
+		lvextend [-r] -L [+|-]<SIZE>M|G /dev/<VG_NAME>/<LV_NAME>
+		lvreduce [-r] -L [+|-]<SIZE>M|G /dev/<VG_NAME>/<LV_NAME>
+		lvremove <LV_NAME>
+
+
+		mkfs.<FSTYPE> /dev/<VG_NAME>/<LV_NAME>
+		mkfs.<FSTYPE> /dev/mapper/<VG_NAME>-<LV_NAME>
+
+		ext3/4 - can extend live, can only shrink offline
+		xfs    - can extend live, no such thing as reduce
+
+
+	Stratis
+	=======
+		yum install -y stratisd stratis-cli
+		systemctl enable --now stratisd		# this enables and starts the service
+		systemctl status stratisd		# check the service
+
+		stratis pool|blockdev|filesystem list [<OBJECT_NAME>]
+		stratis pool create <POOL> <BD>...
+		stratis filesystem create <POOL> <FS>
+		stratis filesystem snapshot <POOL> <FS> <SNAP>
+
+		/etc/fstab
+			/stratis/<POOL>/<FS>  <MNT_PT>  xfs  defaults,x-systemd.requires=stratisd.service  0  0
+
+		DO NOT FORMAT <FS>. STRATIS WILL HANDLE THE FILESYSTEM FOR YOU.
+
+	VDO
+	===
+		yum install -y vdo kmod-kvdo
+
+		vdo create --name=<VDO> --device=<BD> [--vdoLogicalSize=<VOLUME_SIZE>]
+
+		vdo status --name=<VDO>
+		vdostats [--human-readable]
+
+		vdo list|start|stop
