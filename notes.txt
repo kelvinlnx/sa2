@@ -199,6 +199,7 @@ Chap 4
 
 		context:	user_u:role_r:type_t
 
+		PACKAGE DOCUMENTATION: selinux-policy-doc     # man -k _selinux
 		semanage fcontext -l
 		semanage fcontext -a -t <CONTEXT_T> '<RE>'
 		semanage boolean -l
