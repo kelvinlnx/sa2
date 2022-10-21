@@ -400,3 +400,13 @@ Chap 7
 			/mybase/yourmnt   -rw,sync  serverX:/sharename/yourmnt
 			/mybase/his_mnt   -rw,sync  serverX:/sharename/his_mnt
 
+Kickstart
+=========
+	Filename for kickstart file (default) => ks.cfg
+
+	inst.ks=floppy
+	inst.ks=nfs:<SERVER>:/<SHARE>/<FILE>
+	inst.ks=cdrom					# name the file as ks.cfg at base of cd 
+	inst.ks=hd:<FS-DEVICE>:/<DIR>/<FILE>
+		inst.ks=hd:sdb3:/backup/server.cfg
+	inst.ks=<URI> 					# <URI> = http://.... OR ftp://....
