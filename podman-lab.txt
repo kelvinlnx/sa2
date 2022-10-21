@@ -65,3 +65,7 @@ podman ps -a		# container listed
 # Remove the container and verify it's removed
 podman rm myweb
 podman ps -a
+
+# When satisfied with image. Upload it to your own repository in the registry
+podman login quay.io -u <YOUR_USERNAME>
+podman push ubi-web quay.io/<YOUR_USERNAME>/ubi-web:1.0
