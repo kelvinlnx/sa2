@@ -278,11 +278,12 @@ Chap 5
 			mkfs.ext4 /dev/vda2
 			mkfs.xfs /dev/sda3
 			mkfs.vfat /dev/vda3
+			mkswap /dev/vdb2
 
 		vi /etc/fstab
 			#<FS-DEVICE>  <MNT_PT>   <FSTYPE>  <FSOPTS>  <DUMP> <FSCK>
 			/dev/sda1  /opt/share   ext4    defaults,ro  1     2
-			/dev/sdb   swap         swap    defaults     0     0
+			/dev/sdb   swap         swap    defaults,pri=0     0     0
 
 		any changes to /etc/fstab, run the systemctl daemon-reload
 
