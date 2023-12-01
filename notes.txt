@@ -160,7 +160,7 @@ Chap 2
 		ANACRON JOBS:
 			/etc/cron.{hourly,daily,weekly,monthly}/
             
-Chap 3
+Chap 5
 ======
 	Tuned
 	=====
@@ -176,7 +176,7 @@ Chap 3
 		
 		ps -eo pid,ppid,ni,cls,psr,cmd
 
-Chap 4
+Chap 6
 ======
 	SELINUX
 	=======
@@ -232,7 +232,7 @@ Chap 4
 				can class_usage access presentation device = FALSE
 
 
-Chap 5
+Chap 7
 ======
 
 	PARTITIONING
@@ -297,7 +297,7 @@ Chap 5
 		swapoff <DEVICE>	# turn off swap device
 
 
-Chap 6
+Chap 8
 ======
 	Logical Volume Manager (LVM)
 	============================
@@ -355,7 +355,7 @@ Chap 6
 		vdo list|start|stop
 
 
-Chap 7
+Chap 9
 ======
 	NFS Client
 	==========
