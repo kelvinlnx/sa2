@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+	echo 'USAGE: $0 OPTION' >&2
+	echo 'Where OPTION:' >&2
+	echo '   -a: everthing' >&2
+	echo '   -b: bird' >&2
+	exit 123
+else
+	for CNT in `seq 1 $#`; do
+		if [ $1 = '-a' ]; then
+			echo 'CONGRATULATIONS!'
+		elif [ $1 = '-b' ]; then
+			echo Bird Bird
+		fi
+
+		shift
+	done
+
+	echo Finished
+fi
+
+exit 0
