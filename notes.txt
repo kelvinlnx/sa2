@@ -262,7 +262,8 @@ Chap 5
 	=====
 		PACKAGE: tuned
 		SERVICE: tuned
-		
+		CONFIG: /etc/tuned/tuned-main.conf
+
 		tuned-adm list|profile|recommend|active|off
 		
 	Nice
