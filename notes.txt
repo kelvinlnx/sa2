@@ -160,6 +160,102 @@ Chap 2
 		ANACRON JOBS:
 			/etc/cron.{hourly,daily,weekly,monthly}/
             
+Chap 3
+======
+	rsyslog
+	=======
+		PACKAGE: rsyslog
+		SERVICE: rsyslog
+
+		CONFIG:
+			/etc/rsyslog.conf
+			/etc/rsyslog.d/*.conf
+
+	journald
+	========
+		SERVICE: systemd-journald
+
+		CONFIG:
+			/etc/systemd/journald.conf
+
+		PERSISTENT DIR:
+			/var/log/journal
+
+	NTP
+	===
+		timedatectl list-timezone
+		timedatectl set-timezone <TZ>
+		timedatectl set-ntp on|off
+
+		SERVICE: chronyd
+
+		CONFIG:
+			/etc/chrony.conf
+Chap 4
+======
+	Archiving and Transferring Files
+	================================
+	tar {[-]c|t|x} [-v{z|j|J}] {-f <ARCHIVE>.tar[.gz|.bz2|.xz]} [-C <PATH>] [<PATH>...]
+	Where,
+		-c create
+		-t table of contents(view)
+		-x extract
+
+		-v verbose
+
+		-z gzip compression
+		-j bzip2 compression
+		-J xz compression
+
+		-f <ARCHIVE>  archive file to use
+
+		-C <PATH>  only works with -x option in extraction. it extracts to the destination PATH
+
+	scp [-rp] <SRC>... <DEST>
+	rsync [-a] [-v] [--progress] <SRC>... <DEST>
+	Where,
+		-a archive
+		-r recursive
+		-p preserve perm
+		-v verbose
+		--progress show progress of files syncing
+
+		<SRC> = <DEST> = [[<USER>@]<HOSTNAME>:]<PATH>
+	eg.
+		scp file1 user2@server3:/tmp/file5
+		scp user1@server1:file1 user2@server2:.
+		rsync -av --progress user3@server3:/etc/passwd .
+
+	On servera as root user:
+		mkdir /opt/proj
+		cp /etc/passwd /opt/proj
+		echo hi > /opt/proj/greetings
+		chown student /opt/proj/greetings
+		chmod 600 /opt/proj/greetings
+
+		tar cvzf backup.tar.gz /opt/proj /etc/group
+		tar tvzf backup.tar.gz
+		pwd
+		mkdir restore
+		tar xvzf backup.tar.gz -C restore
+		ls -lR restore
+
+		ls
+		scp backup.tar.gz student@serverb:.
+		scp -rp /opt/proj root@serverb:/opt
+		scp -rp /opt/proj root@serverb:/opt
+		scp -rp /opt/proj root@serverb:/opt
+		rsync -av --progress /etc/passwd root@serverb:/opt
+		rsync -av --progress /etc/passwd root@serverb:/opt
+		rsync -av --progress /etc/passwd root@serverb:/opt
+
+		ssh root@serverb ls -lR /opt /home/student
+
+		ssh root@serverb "rm -rf /opt/*"
+		time rsync -av --progress /etc/passwd root@serverb:/opt
+		time rsync -av --progress /etc/passwd root@serverb:/opt
+		time rsync -av --progress /etc/passwd root@serverb:/opt
+
 Chap 5
 ======
 	Tuned
