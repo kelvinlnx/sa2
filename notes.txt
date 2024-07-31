@@ -355,7 +355,7 @@ Chap 7
 
 		Device Naming Convention
 
-			IDE				- /dev/hd{a..h}[#]	eg. /dev/hda, /dev/hdb2
+			IDE		- /dev/hd{a..h}[#]	eg. /dev/hda, /dev/hdb2
 			SCSI/SATA/USB	- /dev/sd{a...}[#]	eg. /dev/sda, /dev/sdb, /dev/sdc5
 			HP Smart Array	- /dev/cciss/c#t#d#	eg. /dev/cciss/c0t0d1
 			Virtual Disk	- /dev/vd{a...}[#]
